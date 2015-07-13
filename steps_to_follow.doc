@@ -1,0 +1,25 @@
+1) get phastCons from UCSC
+# get phastCons from placental and vertebrate data
+http://hgdownload.cse.ucsc.edu/goldenPath/mm9/phastCons30way/
+http://hgdownload.cse.ucsc.edu/goldenPath/mm9/phastCons30way/vertebrate/
+http://hgdownload.cse.ucsc.edu/goldenPath/mm9/phastCons30way/placental/
+
+# get these using ftp
+ftp hgdownload.cse.ucsc.edu 
+user name: anonymous
+password: <your email address>
+cd goldenPath/mm9/phastCons30way/vertebrate
+mget -a
+
+2) Convert wig to bigWig
+# extract compressed files
+gunzip *.data.gz
+
+# fetch chromsizes
+bash fetchChromSizes.sh <mm9 or hg19> > <mm9 or hg19>.chrom.sizes
+
+# run wigToBigWig  on each chromosome file
+wigToBigWig -clip <chr>.data <genome>.chrom.sizes <chr>.bw
+
+3) Calculate mean phastCons score for the coordinates of interest
+use bigWigSummary or the Perl script in this repository retreive_maxmean_PhastCons.pl
